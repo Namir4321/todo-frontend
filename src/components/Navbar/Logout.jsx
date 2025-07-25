@@ -12,7 +12,7 @@ const { resetTasks } = useTasks();
   const handleLogout = () => {
     logout();
     resetTasks()
-    navigate("/login");
+    navigate("/");
   };
 
   return (
