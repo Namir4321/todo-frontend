@@ -7,11 +7,11 @@ const ProtectedRoute = ({ children }) => {
   const isAuthenticated = user || (storedUser && JSON.parse(storedUser));
    const storedUser = localStorage.getItem("user");
   if (!user&&!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
  if (!isAuthenticated) {
-   return <Navigate to="/login" replace />;
+   return <Navigate to="/" replace />;
  }
  
  return children;

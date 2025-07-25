@@ -20,7 +20,7 @@ const Login = () => {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (user || storedUser) {
-      navigate("/", { replace: true });
+      navigate("/task", { replace: true });
     }
   }, [user, navigate]);
   return (

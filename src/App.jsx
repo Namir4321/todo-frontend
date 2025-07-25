@@ -14,7 +14,7 @@ const appRouter = createBrowserRouter([
     element: <Body />,
     children: [
       {
-        path: "/",
+        path: "/task",
         element: (
           <ProtectedRoute>
             <Board />
@@ -22,7 +22,7 @@ const appRouter = createBrowserRouter([
         ),
       },
       {
-        path: "/login",
+        path: "/",
         element: <Login />,
       },
       {
