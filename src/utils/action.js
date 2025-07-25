@@ -11,6 +11,7 @@ export const handleLogin = async (e, login, navigate) => {
       console.log(login);
       login(res.data.user);
       navigate("/", { replace: true });
+      console.log(res)
     } else {
       console.error("Invalid login response:", res.data);
     }
