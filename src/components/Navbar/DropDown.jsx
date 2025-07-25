@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { IoIosArrowDown } from "react-icons/io";
-import { useTasks } from "@/context/TaskContext";
+import { useTasks } from "@/Context/TaskContext";
 
 const DropDown = ({ heading, arraylist }) => {
   const { updateFilter } = useTasks();
