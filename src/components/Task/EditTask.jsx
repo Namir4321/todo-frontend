@@ -5,46 +5,68 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import FormInput from "../Form/FormInput";
 import FormSelect from "../Form/FormSelect";
 import { Button } from "../ui/button";
 import FormContainer from "../Form/FormContainer";
 import FormMultiSelect from "../Form/FormMultiSelect";
-import { useTasks } from "@/Context/TaskContext"; 
+import { useTasks } from "@/Context/TaskContext";
 
-const EditTask = (card) => {
+const EditTask = ({ open, setOpen, card }) => {
   const [loading, setLoading] = useState(false);
-  const { handleAddTask } = useTasks(); // 
-console.log("cllicked")
+  const { updateTask } = useTasks();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+
+    // Ensure tags is an array (handle comma-separated or JSON-style input)
+    const tags =
+      typeof data.tags === "string"
+        ? data.tags.split(",").map((t) => t.trim())
+        : [];
+
+    const payload = {
+      title: data.title,
+      description: data.description,
+      thumbnail: data.thumbnail,
+      tags: tags,
+      status: data.status,
+      date: data.date,
+      projects: data.projects,
+    };
+
+    try {
+      await updateTask(card._id, payload);
+      setOpen(false); // close dialog
+    } catch (err) {
+      console.error("Error updating task:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+console.log(card?.tags);
   return (
-    <Dialog
-     
-    >
-      <DialogTrigger asChild>
-        <Button
-          variant="link"
-          size="xs"
-          onClick={(e) => e.stopPropagation()}
-          onMouseDown={(e) => e.stopPropagation()}
-        >
-          Edit
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="flex">Add Task</DialogTitle>
+          <DialogTitle>Edit Task</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <FormContainer onSubmit={(e) => handleAddTask(e, setLoading)}>
-          <div className="">
+
+        <FormContainer onSubmit={handleSubmit}>
+          <div>
             <FormInput
               id="title"
               name="title"
               type="text"
               placeholder="Task Name"
               label="Task Name"
+              defaultValue={card?.title}
             />
             <FormInput
               id="description"
@@ -52,12 +74,14 @@ console.log("cllicked")
               type="text"
               placeholder="Description"
               label="Description"
+              defaultValue={card?.description}
             />
             <FormSelect
               heading="project"
-              className="w-full mb-2 "
+              className="w-full mb-2"
               name="projects"
               categories={["one", "two", "three"]}
+              defaultValue={card?.projects}
             />
             <FormInput
               id="thumbnail"
@@ -65,18 +89,28 @@ console.log("cllicked")
               type="text"
               placeholder="Thumbnail"
               label="Thumbnail"
+              defaultValue={card?.thumbnail}
             />
-            <FormMultiSelect
+            {/* <FormMultiSelect
               heading="Tags"
               name="tags"
-              options={["Moderate-Priority", "High-Priority", "Low-Priority"]}
-            
-            />
+              options={[
+                ...new Set([
+                  "Moderate-Priority",
+                  "High-Priority",
+                  "Low-Priority",
+                  ...(card?.tags || []),
+                ]),
+              ]}
+              defaultValues={card?.tags || []}
+            /> */}
+
             <FormSelect
               heading="status"
-              className="w-full mb-2 "
+              className="w-full mb-2"
               name="status"
               categories={["todo", "in-progress", "done"]}
+              defaultValue={card?.status}
             />
             <FormInput
               label="time"
@@ -84,11 +118,12 @@ console.log("cllicked")
               name="date"
               type="date"
               placeholder="Date"
+              defaultValue={card?.date}
             />
-          
           </div>
-          <Button disabled={loading} className="" variant="default" size="sm">
-            Save
+
+          <Button disabled={loading} variant="default" size="sm">
+            {loading ? "Saving..." : "Save"}
           </Button>
         </FormContainer>
       </DialogContent>

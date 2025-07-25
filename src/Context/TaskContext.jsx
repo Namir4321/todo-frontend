@@ -15,10 +15,10 @@ export const TaskProvider = ({ children }) => {
   const { user } = useUser();
   useEffect(() => {
     if (user) {
-      filterTasks(); 
+      filterTasks();
     }
   }, [user, filters]);
-//  convert json to array
+  //  convert json to array
   const parseJsonArrayString = (input) => {
     console.log(input);
     try {
@@ -75,7 +75,6 @@ export const TaskProvider = ({ children }) => {
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
 
-   ;
     const tagsArray = parseJsonArrayString(data.tags);
 
     const payload = {
@@ -89,7 +88,7 @@ export const TaskProvider = ({ children }) => {
       const res = await request.post("/task/add", payload);
       setTasks((prev) => [...prev, res.data]);
       setLoading(false);
-      e.target.reset(); 
+      e.target.reset();
     } catch (err) {
       console.error("Error adding task:", err);
       setLoading(false);
@@ -102,6 +101,15 @@ export const TaskProvider = ({ children }) => {
     setTasks((prev) =>
       prev.map((task) => (task._id === id ? { ...task, ...data } : task))
     );
+  };
+  // Delete a task
+  const deleteTask = async (id) => {
+    try {
+      await request.delete(`/task/delete/${id}`);
+      setTasks((prev) => prev.filter((task) => task._id !== id));
+    } catch (err) {
+      console.error("Error deleting task:", err);
+    }
   };
 
   // Initial load and re-filter on filters change
@@ -119,6 +127,7 @@ export const TaskProvider = ({ children }) => {
         filterTasks,
         updateFilter,
         filters,
+        deleteTask,
         resetTasks,
       }}
     >

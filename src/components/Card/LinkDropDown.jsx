@@ -2,33 +2,45 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import React from "react";
+import React, { useState } from "react";
 import EditTask from "../Task/EditTask";
-import { FlipVertical } from "lucide-react";
+import { SlOptionsVertical } from "react-icons/sl";
+import { useTasks } from "@/Context/TaskContext";
 
-const LinkDropDown = ({card}) => {
-    // console.log(card)
+const LinkDropDown = ({ card }) => {
+  const { deleteTask } = useTasks();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger> <FlipVertical/>        </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
-        {/* <DropdownMenuSeparator /> */}
-        <DropdownMenuItem
-          onClick={(e) => e.stopPropagation()}
-          onMouseDown={(e) => e.stopPropagation()}
-        >
-          <EditTask card={card} />
-        </DropdownMenuItem>
-        <DropdownMenuItem>Delete</DropdownMenuItem>
-        {/* <DropdownMenuItem>Team</DropdownMenuItem> */}
-        {/* <DropdownMenuItem>Subscription</DropdownMenuItem> */}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <SlOptionsVertical />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem
+            onMouseDown={(e) => {
+              e.preventDefault(); // prevent Radix from closing dropdown first
+              setIsDialogOpen(true); // open the dialog
+            }}
+          >
+            Edit
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onMouseDown={(e) => {
+              e.preventDefault();
+              deleteTask(card._id); // ✅ delete by ID
+            }}
+          >
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <EditTask open={isDialogOpen} setOpen={setIsDialogOpen} card={card} />
+    </>
   );
 };
 
