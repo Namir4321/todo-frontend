@@ -1,6 +1,6 @@
 import { Input } from "../ui/input";
 import { Search } from "lucide-react";
-import { useTasks } from "@/context/TaskContext";
+import { useTasks } from "@/Context/TaskContext";
 import { useState } from "react";
 
 const SearchInput = () => {
