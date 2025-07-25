@@ -20,11 +20,12 @@ export const handleLogin = async (e, login, navigate) => {
   }
 };
 
-export const handleRegister = async (e) => {
+export const handleRegister = async (e,navigate) => {
   e.preventDefault();
   const formData = new FormData(e.target);
   const data = Object.fromEntries(formData.entries());
   const res = await request.post("/auth/register", data);
   console.log(res);
+   navigate("/", { replace: true });
 };
 
