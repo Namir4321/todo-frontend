@@ -37,7 +37,7 @@ const EditTask = ({ open, setOpen, card }) => {
       tags: tags,
       status: data.status,
       date: data.date,
-      projects: data.projects,
+      projects: data.project,
     };
 
     try {
@@ -77,11 +77,11 @@ console.log(card?.tags);
               defaultValue={card?.description}
             />
             <FormSelect
-              heading="project"
+              heading="Project"
+              name="project"
               className="w-full mb-2"
-              name="projects"
               categories={["one", "two", "three"]}
-              defaultValue={card?.projects}
+              defaultValue={card?.project?.[0] || ""}
             />
             <FormInput
               id="thumbnail"
