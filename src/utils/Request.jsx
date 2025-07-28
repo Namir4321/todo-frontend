@@ -1,6 +1,6 @@
 import axios from "axios";
-const BASE_URL = "https://todo-olbc.onrender.com/api";
+const CLIENT_URL = "https://todo-olbc.onrender.com/api";
 export const request = axios.create({
-  baseURL: BASE_URL,
+  baseURL: CLIENT_URL,
   withCredentials: true,
 });
