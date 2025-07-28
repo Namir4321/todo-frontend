@@ -37,7 +37,7 @@ const EditTask = ({ open, setOpen, card }) => {
       tags: tags,
       status: data.status,
       date: data.date,
-      projects: data.project,
+      project: data.project,
     };
 
     try {
