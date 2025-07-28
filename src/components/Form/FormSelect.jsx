@@ -7,8 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "../ui/label";
-const FormSelect = ({ heading, categories }) => {
-  const name = "category";
+const FormSelect = ({ heading, name, categories, defaultValue }) => {
   return (
     <div className="mb-2 w-full">
       <Label
@@ -17,8 +16,13 @@ const FormSelect = ({ heading, categories }) => {
       >
         {heading}
       </Label>
-      <Select name={heading} required className="w-full">
-        <SelectTrigger id={name} className="w-full ">
+      <Select
+        name={name}
+        defaultValue={defaultValue}
+        required
+        className="w-full"
+      >
+        <SelectTrigger id={name} className="w-full">
           <SelectValue placeholder={heading} />
         </SelectTrigger>
         <SelectContent>
